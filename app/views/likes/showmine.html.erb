@@ -1,3 +1,12 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3>
+      <%= @user.username.capitalize %>'s Likes!
+    </h3>
+  </div>
+</div>
+
+
 
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
@@ -9,64 +18,40 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
 
-<!-- list of photos that others have liked-->
+<!-- list of photos that I have liked-->
 
-<% @photos.each do |photo| %>
+<% @user.likes.each do |like1| %>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">
-          <a href="/users/<%= photo.user_id %>"><%=  User.find(photo.user_id).username.capitalize %>
+          <a href="/users/<%= like1.photo.user_id %>"><%=  like1.photo.user.username %>
           </a>
           <small>
-          About <%=  time_ago_in_words(photo.created_at) %> ago
+          About <%=  time_ago_in_words(like1.photo.created_at) %> ago
           </small>
         </h3>
       </div>
       <div class="panel-body">
-        <a href="/photos/<%= photo.id %>">
-           <img src="<%= photo.image %>" class="img-responsive">
+        <a href="/photos/<%= like1.photo_id %>">
+           <img src="<%= like1.photo.image %>" class="img-responsive">
         </a>
-
 <!-- usernames of people who have liked-->
+
 <p>
+  <a href="/delete_like/<%= like1.id %>" class="btn btn-link">
+    <i class="fa fa-heart"></i>
+    </a>
+    <% usernames = [] %>
 
-<% if photo.fans.where({ :id => current_user.id}).any? == true  %>
-<a href="/delete_like/<%= photo.likes.where({ :user_id => current_user.id}).pluck(:id).first %>" class="btn btn-link">
-    <i class="fa fa-heart"></i></a>
+      <% usernames = like1.photo.fans.pluck(:username) %>
 
-<% elsif photo.fans.where({ :id => current_user.id}).any? == false  %>
-
-<form action="/create_like" method="post">
-              <!-- Hidden input for authenticity token to protect from forgery -->
-              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
-              <input type="hidden" name="photo_id" id="photo_id" value="<%= photo.id %>">
-
-              <input type="hidden" name="user_id" id="user_id" value="<%= current_user.id %>">
-
-              <button class="btn btn-link">
-                <i class="fa fa-heart-o"></i>
-              </button>
-
-
-
-</form>
-<% end %>
-
- <% usernames = [] %>
- <% usernames = photo.fans.pluck(:username) %>
   <%if usernames.length == 1 %>
-    <%= usernames.to_sentence %> likes this!
-  <%elsif usernames.length == 0 %>
-    No one likes this!
+      <%= usernames.to_sentence %> likes this!
   <%elsif usernames.length > 1 %>
-    <%= usernames.to_sentence %> like this!
+      <%= usernames.to_sentence %> like this!
+    <%elsif usernames.length == 0 %>
+      No one likes this!
  <% end %>
-
-
-
-
-
 </p>
 
 <!-- usernames and comments of people who have commented-->
@@ -74,10 +59,10 @@
   <ul class="media-list">
 
             <% comments = [] %>
-            <% photo.comments.each do |comment| %>
+            <% like1.photo.comments.each do |comment| %>
 
-<li class="media">
-            <div class="media-body">
+            <li class="media">
+              <div class="media-body">
               <h6 class="media-heading">
                 <a href="/users/<%= comment.user_id %>">
                 <%=  comment.user.username.capitalize %>
@@ -92,7 +77,6 @@
            </li>
 <% end %>
 
-
 <li class="media">
             <div class="media-body">
                   <form action="/create_comment" method="post">
@@ -100,9 +84,9 @@
                 <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
 
-                <input type="hidden" name="photo_id" id="photo_id" value="<%= photo.id %>">
+                <input type="hidden" name="photo_id" id="photo_id" value="<%= like1.photo.id %>">
 
-                <input type="hidden" name="user_id" id="user_id" value="<%= current_user.id %>">
+                <input type="hidden" name="user_id" id="user_id" value="<%= like1.user_id %>">
 
                 <!-- Label and input for body -->
                 <div class="form-group">
@@ -115,14 +99,6 @@
               </form>
             </div>
           </li>
-
-
-
-
-
-
-
-
 
 </div>
 

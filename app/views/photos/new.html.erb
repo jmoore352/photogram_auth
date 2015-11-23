@@ -33,26 +33,26 @@
           Image
         </label>
 
-        <input type="text" id="image" name="image" placeholder="Image" class="form-control" value="<%= @photo.image %>">
+        <input type="text" id="image" name="image" placeholder="Add a URL" class="form-control" value="<%= @photo.image %>">
       </div>
 
       <!-- Label and input for user_id -->
+     <input type="hidden" id= "user_id" name="user_id" value="<%= current_user.id %>">
+
       <div class="form-group">
-        <label for="user_id" class="control-label">
-          User:
-        </label>
-
- <%= current_user.username.capitalize %>
 
 
 
-      </div>
+
+
 
       <button class="btn btn-success">
         Create Photo
       </button>
-      or
+     </div>
+      <div class="form-group">
       <a href="/photos">Cancel</a>
+</div>
     </form>
   </div>
 </div>

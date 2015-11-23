@@ -1,10 +1,22 @@
 class PhotosController < ApplicationController
+ before_action :current_user_must_be_owner,  :only => [:edit, :update, :destroy]
+
+ skip_before_action :authenticate_user!, :only => [:index]
+
+  def current_user_must_be_owner
+    @photo = Photo.find(params[:id])
+    if @photo.user != current_user
+        redirect_to root_url, :alert => "Not authorized for that."
+    end
+  end
+
   def index
     @photos = Photo.all
   end
 
   def show
     @photo = Photo.find(params[:id])
+    @comment = Comment.new
   end
 
   def new

@@ -7,10 +7,67 @@
 </div>
 
 
- <% @user.photos.each do |photo| %>
-  <div class="panel-body">
-    <div>
-     <img src="<%= photo.image %>"
-    </div>
-  </div>
+
+
+
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+
+<% @user.photos.each do |photo| %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">
+          <a href="/users/<%= photo.user_id %>"><%=  User.find(photo.user_id).username.capitalize %>
+          </a>
+          <small>
+About <%=  time_ago_in_words(photo.created_at) %> ago
+          </small>
+        </h3>
+      </div>
+      <div class="panel-body">
+        <a href="/photos/<%= photo.id %>">
+           <img src="<%= photo.image %>" class="img-responsive">
+        </a>
+
+<p>
+
+  <a href="/delete_like/47" class="btn btn-link">
+    <i class="fa fa-heart"></i>
+ <% usernames = [] %>
+  <% photo.likes.each do |like| %>
+  <% usernames.push(like.user.username) %>
   <% end %>
+
+  <%= usernames.to_sentence %> likes this!
+</p>
+
+  <ul class="media-list">
+
+            <% comments = [] %>
+            <% photo.comments.each do |comment| %>
+
+<li class="media">
+            <div class="media-body">
+              <h6 class="media-heading">
+                <a href="/users/<%= comment.user_id %>">
+                <%=  comment.user.username.capitalize %>
+                </a>
+                <small>
+                  about x hours ago
+                </small>
+              </h6>
+              <% comments.push(comment.body) %>
+              <%= comments.last %>
+            </div>
+           </li>
+<% end %>
+
+
+
+</div>
+
+
+      <% end %>
+
+  </div>
+</div>

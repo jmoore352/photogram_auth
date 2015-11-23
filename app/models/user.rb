@@ -11,5 +11,5 @@ class User < ActiveRecord::Base
   has_many :photos
   has_many :liked_photos, :through => :likes, :source => :photo
 
-
+#source is the name for the method you call on likes     so calling photo on likes
 end

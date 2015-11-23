@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root "photos#index"
+  root "users#index"
 
   # Routes for the Comment resource:
   # CREATE
@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   post "/create_like", :controller => "likes", :action => "create"
 
   # READ
+  get "/my_likes", :controller => "likes", :action => "showmine"
   get "/likes", :controller => "likes", :action => "index"
   get "/likes/:id", :controller => "likes", :action => "show"
 

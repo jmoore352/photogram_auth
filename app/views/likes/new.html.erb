@@ -21,10 +21,11 @@
       <!-- Label and input for user_id -->
       <div class="form-group">
         <label for="user_id" class="control-label">
-          User
+        User
         </label>
 
-        <input type="text" id="user_id" name="user_id" placeholder="User" class="form-control" value="<%= @like.user_id %>">
+        <input type="hidden" id="user_id" name= "user_id" value="<% current_user.id %>"
+
       </div>
 
       <!-- Label and input for photo_id -->
@@ -44,3 +45,4 @@
     </form>
   </div>
 </div>
+
